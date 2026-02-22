@@ -38,12 +38,33 @@
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">
         Home
       </a>
-      <a *ngIf="auth.isLoggedIn" routerLink="/create-post" routerLinkActive="active" class="nav-link">
-        + Create Post
-      </a>
-      <a *ngIf="auth.isLoggedIn" routerLink="/create-subscape" routerLinkActive="active" class="nav-link">
-        + Create SubScape
-      </a>
+    </div>
+
+    <div class="create-menu" #createMenuContainer *ngIf="auth.isLoggedIn">
+      <button
+        class="btn btn-accent btn-sm create-toggle"
+        [class.open]="showCreateMenu"
+        (click)="toggleCreateMenu()"
+      >
+        <span class="create-icon">+</span>
+        <span class="create-label">Create</span>
+      </button>
+      <div class="create-dropdown" *ngIf="showCreateMenu">
+        <a routerLink="/create-post" class="create-option" (click)="selectCreateOption()">
+          <span class="create-option-icon">✎</span>
+          <div class="create-option-text">
+            <span class="create-option-title">New Post</span>
+            <span class="create-option-desc">Share something with a SubScape</span>
+          </div>
+        </a>
+        <a routerLink="/create-subscape" class="create-option" (click)="selectCreateOption()">
+          <span class="create-option-icon">◈</span>
+          <div class="create-option-text">
+            <span class="create-option-title">New SubScape</span>
+            <span class="create-option-desc">Start a new community</span>
+          </div>
+        </a>
+      </div>
     </div>
 
     <div class="navbar-user">
