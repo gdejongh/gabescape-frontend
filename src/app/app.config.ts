@@ -12,7 +12,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
     provideApi(new Configuration({
-      basePath: 'http://localhost:8080',
+      basePath: '',
     }))
   ]
 };

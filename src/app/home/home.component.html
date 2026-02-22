@@ -1,6 +1,17 @@
 <div class="home-header">
   <h1 class="home-title">Your Feed</h1>
-  <a routerLink="/create-post" class="btn btn-accent">+ New Post</a>
+  <a *ngIf="auth.isLoggedIn" routerLink="/create-post" class="btn btn-accent">+ New Post</a>
+</div>
+
+<!-- Login required -->
+<div *ngIf="requiresLogin" class="login-prompt">
+  <span class="login-prompt-icon">◈</span>
+  <h2>Welcome to Gabescape</h2>
+  <p>Log in to browse posts and join the conversation.</p>
+  <div class="login-prompt-actions">
+    <a routerLink="/login" class="btn btn-accent">Log In</a>
+    <a routerLink="/register" class="btn">Sign Up</a>
+  </div>
 </div>
 
 <!-- Loading -->
@@ -20,11 +31,11 @@
 </div>
 
 <!-- Posts -->
-<div *ngIf="!loading && !error" class="post-list">
+<div *ngIf="!loading && !error && !requiresLogin" class="post-list">
   <div *ngIf="posts.length === 0" class="empty-state">
     <span class="empty-icon">◈</span>
-    <h2>Welcome to Gabescape</h2>
-    <p>No posts yet. Create the first one!</p>
+    <h2>No posts yet</h2>
+    <p>Be the first to post something!</p>
     <a routerLink="/create-post" class="btn btn-accent">+ Create Post</a>
   </div>
 

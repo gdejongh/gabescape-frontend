@@ -35,7 +35,7 @@ export class AuthService {
     const creds = btoa(`${username}:${password}`);
     // Use a lightweight endpoint to test credentials
     return this.http
-      .get(`http://localhost:8080/post/username/${encodeURIComponent(username)}`, {
+      .get(`/post/username/${encodeURIComponent(username)}`, {
         headers: { Authorization: `Basic ${creds}` },
         observe: 'response',
       })

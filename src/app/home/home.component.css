@@ -42,3 +42,36 @@
 .empty-state p {
   margin-bottom: var(--space-lg);
 }
+
+.login-prompt {
+  text-align: center;
+  padding: var(--space-2xl) var(--space-lg);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+}
+
+.login-prompt-icon {
+  font-size: 3rem;
+  color: var(--accent);
+  display: block;
+  margin-bottom: var(--space-md);
+}
+
+.login-prompt h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.login-prompt p {
+  color: var(--text-muted);
+  margin-bottom: var(--space-xl);
+}
+
+.login-prompt-actions {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+}

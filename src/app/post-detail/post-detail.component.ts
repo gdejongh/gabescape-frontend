@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { PostControllerService } from '../api/api/postController.service';
 import { CommentControllerService } from '../api/api/commentController.service';
 import { PostDTO } from '../api/model/postDTO';
@@ -26,6 +26,7 @@ export class PostDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private postService: PostControllerService,
     private commentService: CommentControllerService,
     private cdr: ChangeDetectorRef,
@@ -48,8 +49,12 @@ export class PostDetailComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err: any) => {
-        console.error("API Error:", err);
-        this.error = 'Failed to load post.';
+        console.error('API Error:', err);
+        if (err.status === 401) {
+          this.router.navigate(['/login'], { queryParams: { returnUrl: this.router.url } });
+        } else {
+          this.error = 'Failed to load post.';
+        }
         this.loading = false;
         this.cdr.detectChanges();
       }

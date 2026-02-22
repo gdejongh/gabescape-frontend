@@ -13,6 +13,5 @@ export interface CommentDTO {
     id?: number;
     commentText?: string;
     creatorUsername?: string;
-    replies?: Array<CommentDTO>;
 }
 

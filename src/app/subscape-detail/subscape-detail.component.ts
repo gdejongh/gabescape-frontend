@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { SubScapeControllerService } from '../api/api/subScapeController.service';
 import { PostControllerService } from '../api/api/postController.service';
 import { SubScapeDTO } from '../api/model/subScapeDTO';
@@ -22,6 +22,7 @@ export class SubScapeDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private subScapeService: SubScapeControllerService,
     private postService: PostControllerService
   ) {}
@@ -39,8 +40,12 @@ export class SubScapeDetailComponent implements OnInit {
         this.subscape = data;
         this.loadPosts(name);
       },
-      error: () => {
-        this.error = 'Failed to load SubScape.';
+      error: (err) => {
+        if (err.status === 401) {
+          this.router.navigate(['/login'], { queryParams: { returnUrl: this.router.url } });
+        } else {
+          this.error = 'Failed to load SubScape.';
+        }
         this.loading = false;
       },
     });
@@ -52,8 +57,12 @@ export class SubScapeDetailComponent implements OnInit {
         this.posts = data;
         this.loading = false;
       },
-      error: () => {
-        this.error = 'Failed to load posts.';
+      error: (err) => {
+        if (err.status === 401) {
+          this.router.navigate(['/login'], { queryParams: { returnUrl: this.router.url } });
+        } else {
+          this.error = 'Failed to load posts.';
+        }
         this.loading = false;
       },
     });
