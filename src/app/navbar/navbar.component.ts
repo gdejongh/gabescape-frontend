@@ -24,6 +24,9 @@ export class NavbarComponent {
   private searchSubject = new Subject<string>();
 
   @ViewChild('searchContainer') searchContainer!: ElementRef;
+  @ViewChild('createMenuContainer') createMenuContainer!: ElementRef;
+
+  showCreateMenu = false;
 
   constructor(
     public auth: AuthService,
@@ -81,6 +84,17 @@ export class NavbarComponent {
     if (this.searchContainer && !this.searchContainer.nativeElement.contains(event.target)) {
       this.showResults = false;
     }
+    if (this.createMenuContainer && !this.createMenuContainer.nativeElement.contains(event.target)) {
+      this.showCreateMenu = false;
+    }
+  }
+
+  toggleCreateMenu(): void {
+    this.showCreateMenu = !this.showCreateMenu;
+  }
+
+  selectCreateOption(): void {
+    this.showCreateMenu = false;
   }
 
   logout(): void {
