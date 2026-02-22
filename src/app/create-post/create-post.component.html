@@ -10,16 +10,39 @@
     </div>
 
     <div class="form-group">
-      <label class="form-label" for="subScapeId">SubScape ID</label>
-      <input
-        id="subScapeId"
-        type="number"
-        class="input"
-        placeholder="Enter SubScape ID"
-        [(ngModel)]="subScapeId"
-        name="subScapeId"
-        [disabled]="submitting"
-      />
+      <label class="form-label">SubScape</label>
+      <div class="subscape-autocomplete">
+        <div *ngIf="selectedSubScape" class="subscape-selected">
+          <span class="selected-name">{{ selectedSubScape.subScapeName }}</span>
+          <span class="selected-desc" *ngIf="selectedSubScape.subScapeDescription"> — {{ selectedSubScape.subScapeDescription }}</span>
+          <button type="button" class="clear-btn" (click)="clearSelection()" [disabled]="submitting">&times;</button>
+        </div>
+        <input
+          *ngIf="!selectedSubScape"
+          type="text"
+          class="input"
+          placeholder="Search for a SubScape…"
+          [(ngModel)]="searchTerm"
+          name="searchTerm"
+          (focus)="onSearchFocus()"
+          (blur)="onSearchBlur()"
+          [disabled]="submitting || loadingSubScapes"
+          autocomplete="off"
+        />
+        <ul class="subscape-dropdown" *ngIf="showDropdown && !selectedSubScape && filteredSubScapes.length > 0">
+          <li
+            *ngFor="let s of filteredSubScapes"
+            class="subscape-option"
+            (mousedown)="selectSubScape(s)"
+          >
+            <span class="option-name">{{ s.subScapeName }}</span>
+            <span class="option-desc" *ngIf="s.subScapeDescription"> — {{ s.subScapeDescription }}</span>
+          </li>
+        </ul>
+        <div class="subscape-dropdown subscape-empty" *ngIf="showDropdown && !selectedSubScape && filteredSubScapes.length === 0 && !loadingSubScapes">
+          No SubScapes found.
+        </div>
+      </div>
     </div>
 
     <div class="form-group">

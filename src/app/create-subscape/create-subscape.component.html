@@ -1,0 +1,45 @@
+<div class="create-subscape-page">
+  <div class="page-header">
+    <a routerLink="/" class="back-link">← Back to feed</a>
+    <h1 class="page-title">Create a SubScape</h1>
+  </div>
+
+  <form class="create-form card" (ngSubmit)="onSubmit()">
+    <div *ngIf="error" class="form-error">
+      {{ error }}
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="name">Name</label>
+      <input
+        id="name"
+        type="text"
+        class="input"
+        placeholder="e.g. Gaming, Science, Music…"
+        [(ngModel)]="name"
+        name="name"
+        [disabled]="submitting"
+      />
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="description">Description</label>
+      <textarea
+        id="description"
+        class="textarea"
+        placeholder="What is this SubScape about?"
+        [(ngModel)]="description"
+        name="description"
+        rows="4"
+        [disabled]="submitting"
+      ></textarea>
+    </div>
+
+    <div class="form-actions">
+      <a routerLink="/" class="btn">Cancel</a>
+      <button type="submit" class="btn btn-accent" [disabled]="submitting">
+        {{ submitting ? 'Creating...' : 'Create SubScape' }}
+      </button>
+    </div>
+  </form>
+</div>

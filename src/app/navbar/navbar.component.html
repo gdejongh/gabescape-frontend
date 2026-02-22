@@ -5,12 +5,44 @@
       <span class="brand-text">gabescape</span>
     </a>
 
+    <div class="navbar-search" #searchContainer>
+      <div class="search-input-wrapper">
+        <span class="search-icon">⌕</span>
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Search SubScapes..."
+          [(ngModel)]="searchQuery"
+          (input)="onSearchInput()"
+          (focus)="searchQuery.trim() && searchResults.length ? showResults = true : null"
+        />
+        <span *ngIf="searchQuery" class="search-clear" (click)="clearSearch()">✕</span>
+      </div>
+      <div class="search-dropdown" *ngIf="showResults">
+        <div *ngIf="searching" class="search-status">Searching...</div>
+        <div *ngIf="!searching && searchResults.length === 0" class="search-status">No SubScapes found</div>
+        <a
+          *ngFor="let result of searchResults"
+          class="search-result"
+          (click)="goToSubScape(result.subScapeName)"
+        >
+          <span class="result-name">s/{{ result.subScapeName }}</span>
+          <span class="result-desc" *ngIf="result.subScapeDescription">
+            {{ result.subScapeDescription | slice:0:60 }}{{ result.subScapeDescription!.length > 60 ? '...' : '' }}
+          </span>
+        </a>
+      </div>
+    </div>
+
     <div class="navbar-links">
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">
         Home
       </a>
       <a *ngIf="auth.isLoggedIn" routerLink="/create-post" routerLinkActive="active" class="nav-link">
         + Create Post
+      </a>
+      <a *ngIf="auth.isLoggedIn" routerLink="/create-subscape" routerLinkActive="active" class="nav-link">
+        + Create SubScape
       </a>
     </div>
 
