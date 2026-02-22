@@ -1,0 +1,55 @@
+.post-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  margin-bottom: var(--space-md);
+}
+
+.post-card:hover {
+  color: inherit;
+}
+
+.post-card-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+  font-size: 0.85rem;
+}
+
+.meta-separator {
+  color: var(--text-muted);
+}
+
+.meta-author {
+  color: var(--text-muted);
+}
+
+.post-card-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+  line-height: 1.4;
+}
+
+.post-card-preview {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: var(--space-md);
+}
+
+.post-card-footer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.footer-item {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}

@@ -1,0 +1,19 @@
+<a [routerLink]="'/post/' + post.id" class="post-card card card-clickable">
+  <div class="post-card-meta">
+    <a class="pill" [routerLink]="'/s/' + post.subScapeName" (click)="$event.stopPropagation()">s/{{ post.subScapeName }}</a>
+    <span class="meta-separator">•</span>
+    <span class="meta-author">{{ post.creatorUsername }}</span>
+  </div>
+
+  <h2 class="post-card-title">{{ post.postTitle }}</h2>
+
+  <p class="post-card-preview" *ngIf="post.postText">
+    {{ post.postText | slice:0:200 }}{{ post.postText!.length > 200 ? '...' : '' }}
+  </p>
+
+  <div class="post-card-footer">
+    <span class="footer-item">
+      💬 {{ post.comments?.length || 0 }} comments
+    </span>
+  </div>
+</a>

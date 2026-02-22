@@ -1,0 +1,33 @@
+.not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-2xl) var(--space-lg);
+  min-height: 60vh;
+}
+
+.not-found-icon {
+  font-size: 4rem;
+  color: var(--accent);
+  opacity: 0.3;
+  margin-bottom: var(--space-lg);
+}
+
+.not-found h1 {
+  font-size: 5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), #7efcfc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin-bottom: var(--space-sm);
+}
+
+.not-found p {
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  margin-bottom: var(--space-xl);
+}

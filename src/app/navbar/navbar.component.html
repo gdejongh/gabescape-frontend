@@ -1,0 +1,21 @@
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a routerLink="/" class="navbar-brand">
+      <span class="brand-icon">◈</span>
+      <span class="brand-text">gabescape</span>
+    </a>
+
+    <div class="navbar-links">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">
+        Home
+      </a>
+      <a routerLink="/create-post" routerLinkActive="active" class="nav-link">
+        + Create Post
+      </a>
+    </div>
+
+    <div class="navbar-user">
+      <div class="avatar">G</div>
+    </div>
+  </div>
+</nav>

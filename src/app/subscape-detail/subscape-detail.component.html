@@ -1,0 +1,41 @@
+<!-- Loading -->
+<div *ngIf="loading" class="subscape-page">
+  <div class="subscape-header card">
+    <div class="skeleton skeleton-title"></div>
+    <div class="skeleton skeleton-text" style="width: 70%"></div>
+  </div>
+  <div class="card skeleton-card" *ngFor="let i of [1, 2]">
+    <div class="skeleton skeleton-text" style="width: 30%"></div>
+    <div class="skeleton skeleton-title"></div>
+    <div class="skeleton skeleton-block"></div>
+  </div>
+</div>
+
+<!-- Error -->
+<div *ngIf="error" class="empty-state">
+  <span class="empty-icon">⚠</span>
+  <p>{{ error }}</p>
+  <a routerLink="/" class="btn">← Back to Home</a>
+</div>
+
+<!-- Content -->
+<div *ngIf="!loading && !error && subscape" class="subscape-page">
+  <div class="subscape-header card">
+    <div class="subscape-header-top">
+      <h1 class="subscape-name">s/{{ subscape.subScapeName }}</h1>
+      <span class="subscape-creator">Created by {{ subscape.creatorUsername }}</span>
+    </div>
+    <p class="subscape-description" *ngIf="subscape.subScapeDescription">
+      {{ subscape.subScapeDescription }}
+    </p>
+  </div>
+
+  <div class="post-list">
+    <div *ngIf="posts.length === 0" class="empty-state">
+      <p>No posts in this SubScape yet.</p>
+      <a routerLink="/create-post" class="btn btn-accent">+ Create Post</a>
+    </div>
+
+    <app-post-card *ngFor="let post of posts" [post]="post"></app-post-card>
+  </div>
+</div>

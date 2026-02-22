@@ -1,0 +1,58 @@
+<div class="create-post-page">
+  <div class="page-header">
+    <a routerLink="/" class="back-link">← Back to feed</a>
+    <h1 class="page-title">Create a Post</h1>
+  </div>
+
+  <form class="create-form card" (ngSubmit)="onSubmit()">
+    <div *ngIf="error" class="form-error">
+      {{ error }}
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="subScapeId">SubScape ID</label>
+      <input
+        id="subScapeId"
+        type="number"
+        class="input"
+        placeholder="Enter SubScape ID"
+        [(ngModel)]="subScapeId"
+        name="subScapeId"
+        [disabled]="submitting"
+      />
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="title">Title</label>
+      <input
+        id="title"
+        type="text"
+        class="input"
+        placeholder="An interesting title..."
+        [(ngModel)]="title"
+        name="title"
+        [disabled]="submitting"
+      />
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="text">Body</label>
+      <textarea
+        id="text"
+        class="textarea"
+        placeholder="What's on your mind?"
+        [(ngModel)]="text"
+        name="text"
+        rows="6"
+        [disabled]="submitting"
+      ></textarea>
+    </div>
+
+    <div class="form-actions">
+      <a routerLink="/" class="btn">Cancel</a>
+      <button type="submit" class="btn btn-accent" [disabled]="submitting">
+        {{ submitting ? 'Posting...' : 'Create Post' }}
+      </button>
+    </div>
+  </form>
+</div>

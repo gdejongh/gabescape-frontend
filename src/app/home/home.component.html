@@ -1,0 +1,32 @@
+<div class="home-header">
+  <h1 class="home-title">Your Feed</h1>
+  <a routerLink="/create-post" class="btn btn-accent">+ New Post</a>
+</div>
+
+<!-- Loading -->
+<div *ngIf="loading" class="post-list">
+  <div class="card skeleton-card" *ngFor="let i of [1, 2, 3]">
+    <div class="skeleton skeleton-text" style="width: 30%"></div>
+    <div class="skeleton skeleton-title"></div>
+    <div class="skeleton skeleton-block"></div>
+    <div class="skeleton skeleton-text" style="width: 20%"></div>
+  </div>
+</div>
+
+<!-- Error -->
+<div *ngIf="error" class="empty-state">
+  <span class="empty-icon">⚠</span>
+  <p>{{ error }}</p>
+</div>
+
+<!-- Posts -->
+<div *ngIf="!loading && !error" class="post-list">
+  <div *ngIf="posts.length === 0" class="empty-state">
+    <span class="empty-icon">◈</span>
+    <h2>Welcome to Gabescape</h2>
+    <p>No posts yet. Create the first one!</p>
+    <a routerLink="/create-post" class="btn btn-accent">+ Create Post</a>
+  </div>
+
+  <app-post-card *ngFor="let post of posts" [post]="post"></app-post-card>
+</div>

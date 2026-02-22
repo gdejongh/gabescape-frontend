@@ -1,0 +1,65 @@
+.subscape-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.subscape-header {
+  margin-bottom: var(--space-xl);
+}
+
+.subscape-header:hover {
+  transform: none;
+  background: var(--bg-card);
+}
+
+.subscape-header-top {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-md);
+  margin-bottom: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.subscape-name {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.subscape-creator {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.subscape-description {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.post-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.skeleton-card {
+  padding: var(--space-lg);
+  margin-bottom: var(--space-md);
+}
+
+.empty-state {
+  text-align: center;
+  padding: var(--space-2xl) var(--space-lg);
+  color: var(--text-muted);
+}
+
+.empty-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: var(--space-md);
+  opacity: 0.5;
+}
+
+.empty-state p {
+  margin-bottom: var(--space-lg);
+}
