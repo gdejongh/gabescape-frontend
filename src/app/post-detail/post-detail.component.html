@@ -1,24 +1,106 @@
-<div *ngIf="loading">Loading...</div>
-<div *ngIf="error">{{ error }}</div>
-
-<div *ngIf="post">
-  <h1>{{ post.postTitle }}</h1>
-  <p>{{ post.postText }}</p>
-  <small>Posted in s/{{ post.subScapeName }} by {{ post.creatorUsername }}</small>
-
-  <hr />
-
-  <h3>Comments</h3>
-  <div *ngIf="post.comments?.length === 0">No comments yet.</div>
-  <ng-container *ngFor="let comment of post.comments">
-    <ng-container *ngTemplateOutlet="commentTemplate; context: { comment: comment, depth: 0 }"></ng-container>
-  </ng-container>
+<!-- Loading State -->
+<div *ngIf="loading" class="loading-state">
+  <div class="post-card">
+    <div class="skeleton skeleton-title"></div>
+    <div class="skeleton skeleton-block"></div>
+    <div class="skeleton skeleton-text" style="width: 40%"></div>
+  </div>
 </div>
 
+<!-- Error State -->
+<div *ngIf="error" class="error-state">
+  <div class="error-card">
+    <span class="error-icon">⚠</span>
+    <p>{{ error }}</p>
+    <a routerLink="/" class="btn">← Back to Home</a>
+  </div>
+</div>
+
+<!-- Post Content -->
+<div *ngIf="post" class="post-detail">
+  <a routerLink="/" class="back-link">← Back to feed</a>
+
+  <article class="post-card">
+    <div class="post-meta">
+      <a class="pill" [routerLink]="'/s/' + post.subScapeName">s/{{ post.subScapeName }}</a>
+      <span class="meta-separator">•</span>
+      <span class="post-author">{{ post.creatorUsername }}</span>
+    </div>
+
+    <h1 class="post-title">{{ post.postTitle }}</h1>
+    <div class="post-body">
+      <p>{{ post.postText }}</p>
+    </div>
+  </article>
+
+  <!-- Comments Section -->
+  <section class="comments-section">
+    <h3 class="comments-header">
+      Comments
+      <span class="comment-count" *ngIf="post.comments">{{ post.comments.length }}</span>
+    </h3>
+
+    <!-- Top-level reply form -->
+    <div class="reply-form-wrapper" *ngIf="replyingTo === null || replyingTo === undefined">
+      <div class="reply-form" *ngIf="replyingTo === null">
+        <textarea
+          class="textarea"
+          placeholder="Write a comment..."
+          [(ngModel)]="replyText"
+          rows="3"
+          [disabled]="submittingReply"
+        ></textarea>
+        <div class="reply-actions">
+          <button class="btn btn-sm" (click)="cancelReply()" [disabled]="submittingReply">Cancel</button>
+          <button class="btn btn-accent btn-sm" (click)="submitReply()" [disabled]="submittingReply || !replyText.trim()">
+            {{ submittingReply ? 'Posting...' : 'Comment' }}
+          </button>
+        </div>
+      </div>
+      <button *ngIf="replyingTo !== null" class="btn btn-sm" (click)="openReply(null)">+ Add Comment</button>
+    </div>
+    <button *ngIf="replyingTo !== null" class="btn btn-sm add-comment-btn" (click)="openReply(null)">+ Add Comment</button>
+
+    <div *ngIf="post.comments?.length === 0" class="no-comments">
+      <p>No comments yet. Be the first to share your thoughts.</p>
+    </div>
+
+    <div class="comments-list">
+      <ng-container *ngFor="let comment of post.comments">
+        <ng-container *ngTemplateOutlet="commentTemplate; context: { comment: comment, depth: 0 }"></ng-container>
+      </ng-container>
+    </div>
+  </section>
+</div>
+
+<!-- Recursive Comment Template -->
 <ng-template #commentTemplate let-comment="comment" let-depth="depth">
-  <div [style.margin-left.px]="depth * 20">
-    <p>{{ comment.commentText }}</p>
-    <small>by {{ comment.creatorUsername }}</small>
+  <div class="comment" [class.comment-nested]="depth > 0" [style.margin-left.px]="depth * 24">
+    <div class="comment-accent-line"></div>
+    <div class="comment-content">
+      <div class="comment-header">
+        <span class="comment-author">{{ comment.creatorUsername }}</span>
+      </div>
+      <p class="comment-text">{{ comment.commentText }}</p>
+      <button class="reply-btn" (click)="openReply(comment.id)">Reply</button>
+
+      <!-- Inline reply form -->
+      <div *ngIf="replyingTo === comment.id" class="reply-form">
+        <textarea
+          class="textarea"
+          placeholder="Write a reply..."
+          [(ngModel)]="replyText"
+          rows="2"
+          [disabled]="submittingReply"
+        ></textarea>
+        <div class="reply-actions">
+          <button class="btn btn-sm" (click)="cancelReply()" [disabled]="submittingReply">Cancel</button>
+          <button class="btn btn-accent btn-sm" (click)="submitReply()" [disabled]="submittingReply || !replyText.trim()">
+            {{ submittingReply ? 'Posting...' : 'Reply' }}
+          </button>
+        </div>
+      </div>
+    </div>
     <div *ngFor="let reply of comment.replies">
       <ng-container *ngTemplateOutlet="commentTemplate; context: { comment: reply, depth: depth + 1 }"></ng-container>
     </div>

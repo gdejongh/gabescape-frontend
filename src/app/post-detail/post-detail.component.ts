@@ -1,23 +1,32 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { PostControllerService } from '../api/api/postController.service';
+import { CommentControllerService } from '../api/api/commentController.service';
 import { PostDTO } from '../api/model/postDTO';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-post-detail',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './post-detail.component.html',
+  styleUrl: './post-detail.component.css',
 })
 export class PostDetailComponent implements OnInit {
   post?: PostDTO;
   loading = true;
   error?: string;
 
+  // Comment reply state
+  replyingTo: number | null = null; // null = top-level, number = parent comment id
+  replyText = '';
+  submittingReply = false;
+
   constructor(
     private route: ActivatedRoute,
     private postService: PostControllerService,
+    private commentService: CommentControllerService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -25,19 +34,57 @@ export class PostDetailComponent implements OnInit {
     const idParam = this.route.snapshot.paramMap.get('id');
     
     if (idParam) {
-      this.postService.getAllPostAndCommentsByPostId(Number(idParam)).subscribe({
-        next: async (data: any) => {
-          this.post = data; // It will be a real object now!
-          this.loading = false;
+      this.loadPost(Number(idParam));
+    }
+  }
+
+  private loadPost(id: number): void {
+    this.postService.getAllPostAndCommentsByPostId(id).subscribe({
+      next: (data: any) => {
+        this.post = data;
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => {
+        console.error("API Error:", err);
+        this.error = 'Failed to load post.';
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  openReply(commentId: number | null): void {
+    this.replyingTo = commentId;
+    this.replyText = '';
+  }
+
+  cancelReply(): void {
+    this.replyingTo = null;
+    this.replyText = '';
+  }
+
+  submitReply(): void {
+    if (!this.replyText.trim() || !this.post?.id) return;
+
+    this.submittingReply = true;
+    const parentId = this.replyingTo ?? undefined;
+
+    this.commentService
+      .createComment(this.post.id, { text: this.replyText.trim() }, parentId)
+      .subscribe({
+        next: () => {
+          this.replyingTo = null;
+          this.replyText = '';
+          this.submittingReply = false;
+          // Reload the post to get updated comments
+          this.loadPost(this.post!.id!);
+        },
+        error: (err) => {
+          console.error('Failed to post comment:', err);
+          this.submittingReply = false;
           this.cdr.detectChanges();
         },
-        error: (err: any) => {
-          console.error("API Error:", err);
-          this.error = 'Failed to load post.';
-          this.loading = false;
-          this.cdr.detectChanges();
-        }
       });
-    }
   }
 }
