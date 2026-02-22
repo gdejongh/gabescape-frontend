@@ -1,0 +1,26 @@
+<div *ngIf="loading">Loading...</div>
+<div *ngIf="error">{{ error }}</div>
+
+<div *ngIf="post">
+  <h1>{{ post.postTitle }}</h1>
+  <p>{{ post.postText }}</p>
+  <small>Posted in s/{{ post.subScapeName }} by {{ post.creatorUsername }}</small>
+
+  <hr />
+
+  <h3>Comments</h3>
+  <div *ngIf="post.comments?.length === 0">No comments yet.</div>
+  <ng-container *ngFor="let comment of post.comments">
+    <ng-container *ngTemplateOutlet="commentTemplate; context: { comment: comment, depth: 0 }"></ng-container>
+  </ng-container>
+</div>
+
+<ng-template #commentTemplate let-comment="comment" let-depth="depth">
+  <div [style.margin-left.px]="depth * 20">
+    <p>{{ comment.commentText }}</p>
+    <small>by {{ comment.creatorUsername }}</small>
+    <div *ngFor="let reply of comment.replies">
+      <ng-container *ngTemplateOutlet="commentTemplate; context: { comment: reply, depth: depth + 1 }"></ng-container>
+    </div>
+  </div>
+</ng-template>
