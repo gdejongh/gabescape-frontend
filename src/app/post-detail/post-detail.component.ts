@@ -5,6 +5,7 @@ import { CommentControllerService } from '../api/api/commentController.service';
 import { PostDTO } from '../api/model/postDTO';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-post-detail',
@@ -27,7 +28,8 @@ export class PostDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private postService: PostControllerService,
     private commentService: CommentControllerService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    public auth: AuthService
   ) {}
 
   ngOnInit(): void {

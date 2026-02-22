@@ -9,13 +9,23 @@
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">
         Home
       </a>
-      <a routerLink="/create-post" routerLinkActive="active" class="nav-link">
+      <a *ngIf="auth.isLoggedIn" routerLink="/create-post" routerLinkActive="active" class="nav-link">
         + Create Post
       </a>
     </div>
 
     <div class="navbar-user">
-      <div class="avatar">G</div>
+      <!-- Logged in -->
+      <ng-container *ngIf="auth.isLoggedIn">
+        <span class="navbar-username">{{ auth.username }}</span>
+        <div class="avatar" (click)="logout()" title="Log out">{{ avatarLetter }}</div>
+      </ng-container>
+
+      <!-- Logged out -->
+      <ng-container *ngIf="!auth.isLoggedIn">
+        <a routerLink="/login" class="btn btn-sm">Log In</a>
+        <a routerLink="/register" class="btn btn-accent btn-sm">Sign Up</a>
+      </ng-container>
     </div>
   </div>
 </nav>

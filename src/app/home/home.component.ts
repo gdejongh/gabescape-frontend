@@ -20,9 +20,7 @@ export class HomeComponent implements OnInit {
   constructor(private postService: PostControllerService) {}
 
   ngOnInit(): void {
-    // Using getAllPostsByUsername since there's no "get all" endpoint yet.
-    // The auth is hardcoded to gdejongh.
-    this.postService.getAllPostsByUsername('gdejongh').subscribe({
+    this.postService.getAllPosts().subscribe({
       next: (data) => {
         this.posts = data;
         this.loading = false;

@@ -40,8 +40,8 @@
       <span class="comment-count" *ngIf="post.comments">{{ post.comments.length }}</span>
     </h3>
 
-    <!-- Top-level reply form -->
-    <div class="reply-form-wrapper" *ngIf="replyingTo === null || replyingTo === undefined">
+    <!-- Top-level reply form (logged in) -->
+    <div *ngIf="auth.isLoggedIn" class="reply-form-wrapper">
       <div class="reply-form" *ngIf="replyingTo === null">
         <textarea
           class="textarea"
@@ -57,9 +57,13 @@
           </button>
         </div>
       </div>
-      <button *ngIf="replyingTo !== null" class="btn btn-sm" (click)="openReply(null)">+ Add Comment</button>
+      <button *ngIf="replyingTo !== null" class="btn btn-sm add-comment-btn" (click)="openReply(null)">+ Add Comment</button>
     </div>
-    <button *ngIf="replyingTo !== null" class="btn btn-sm add-comment-btn" (click)="openReply(null)">+ Add Comment</button>
+
+    <!-- Login CTA (logged out) -->
+    <div *ngIf="!auth.isLoggedIn" class="login-cta">
+      <a routerLink="/login" class="btn btn-accent btn-sm">Log in to comment</a>
+    </div>
 
     <div *ngIf="post.comments?.length === 0" class="no-comments">
       <p>No comments yet. Be the first to share your thoughts.</p>
@@ -82,10 +86,10 @@
         <span class="comment-author">{{ comment.creatorUsername }}</span>
       </div>
       <p class="comment-text">{{ comment.commentText }}</p>
-      <button class="reply-btn" (click)="openReply(comment.id)">Reply</button>
+      <button *ngIf="auth.isLoggedIn" class="reply-btn" (click)="openReply(comment.id)">Reply</button>
 
       <!-- Inline reply form -->
-      <div *ngIf="replyingTo === comment.id" class="reply-form">
+      <div *ngIf="auth.isLoggedIn && replyingTo === comment.id" class="reply-form">
         <textarea
           class="textarea"
           placeholder="Write a reply..."

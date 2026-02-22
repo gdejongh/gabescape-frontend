@@ -203,3 +203,12 @@
 .add-comment-btn {
   margin-bottom: var(--space-lg);
 }
+
+.login-cta {
+  margin-bottom: var(--space-lg);
+  padding: var(--space-md);
+  text-align: center;
+  background: var(--bg-card);
+  border: 1px dashed var(--border-color);
+  border-radius: var(--radius-sm);
+}

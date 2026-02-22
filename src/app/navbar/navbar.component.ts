@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterLinkActive, Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,4 +10,15 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
 })
-export class NavbarComponent {}
+export class NavbarComponent {
+  constructor(public auth: AuthService, private router: Router) {}
+
+  get avatarLetter(): string {
+    return (this.auth.username || '?')[0].toUpperCase();
+  }
+
+  logout(): void {
+    this.auth.logout();
+    this.router.navigateByUrl('/');
+  }
+}
