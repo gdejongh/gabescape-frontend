@@ -17,5 +17,7 @@ export interface PostDTO {
     subScapeName?: string;
     creatorUsername?: string;
     comments?: Array<CommentDTO>;
+    createdAt?: string;
+    modifiedAt?: string;
 }
 

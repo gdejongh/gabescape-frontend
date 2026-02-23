@@ -46,9 +46,9 @@ export class SubScapeControllerService extends BaseService {
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
      */
-    public createSubScape(subScape: SubScape, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<SubScapeDTO>;
-    public createSubScape(subScape: SubScape, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<SubScapeDTO>>;
-    public createSubScape(subScape: SubScape, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<SubScapeDTO>>;
+    public createSubScape(subScape: SubScape, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<object>;
+    public createSubScape(subScape: SubScape, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<object>>;
+    public createSubScape(subScape: SubScape, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<object>>;
     public createSubScape(subScape: SubScape, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (subScape === null || subScape === undefined) {
             throw new Error('Required parameter subScape was null or undefined when calling createSubScape.');
@@ -90,7 +90,7 @@ export class SubScapeControllerService extends BaseService {
 
         let localVarPath = `/subscape/create`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<SubScapeDTO>('post', `${basePath}${localVarPath}`,
+        return this.httpClient.request<object>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: subScape,
@@ -289,6 +289,7 @@ export class SubScapeControllerService extends BaseService {
         }
 
         let localVarQueryParameters = new OpenApiHttpParams(this.encoder);
+
         localVarQueryParameters = this.addToHttpParams(
             localVarQueryParameters,
             'q',
@@ -296,6 +297,7 @@ export class SubScapeControllerService extends BaseService {
             QueryParamStyle.Form,
             true,
         );
+
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -307,7 +309,9 @@ export class SubScapeControllerService extends BaseService {
         }
 
         const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
         const localVarTransferCache: boolean = options?.transferCache ?? true;
+
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
         if (localVarHttpHeaderAcceptSelected) {
