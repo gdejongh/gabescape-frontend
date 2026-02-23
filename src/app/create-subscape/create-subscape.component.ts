@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { SubScapeControllerService } from '../api/api/subScapeController.service';
+import { SubScape } from '../api/model/subScape';
 
 @Component({
   selector: 'app-create-subscape',
@@ -38,7 +39,7 @@ export class CreateSubScapeComponent {
       })
       .subscribe({
         next: (subScape) => {
-          this.router.navigate(['/s', subScape.subScapeName]);
+          this.router.navigate(['/s', (subScape as SubScape).subScapeName]);
         },
         error: (err) => {
           console.error('Failed to create SubScape:', err);
