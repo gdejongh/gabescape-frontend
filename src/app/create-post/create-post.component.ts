@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { PostControllerService } from '../api/api/postController.service';
+import { SubScapeControllerService } from '../api/api/subScapeController.service';
 import { SubScapeDTO } from '../api/model/subScapeDTO';
 
 @Component({
@@ -25,8 +26,16 @@ export class CreatePostComponent implements OnInit {
   showDropdown = false;
   loadingSubScapes = false;
 
+  // Inline SubScape creation
+  showInlineCreate = false;
+  newSubScapeName = '';
+  newSubScapeDesc = '';
+  creatingSub = false;
+  createSubError?: string;
+
   constructor(
     private postService: PostControllerService,
+    private subScapeService: SubScapeControllerService,
     private router: Router,
     private http: HttpClient
   ) {}
@@ -64,9 +73,57 @@ export class CreatePostComponent implements OnInit {
 
   onSearchBlur(): void {
     // Delay to allow click on dropdown item to register
+    // Don't close the dropdown if the inline create form is open
     setTimeout(() => {
-      this.showDropdown = false;
+      if (!this.showInlineCreate) {
+        this.showDropdown = false;
+      }
     }, 200);
+  }
+
+  startInlineCreate(): void {
+    this.newSubScapeName = this.searchTerm.trim();
+    this.newSubScapeDesc = '';
+    this.createSubError = undefined;
+    this.showInlineCreate = true;
+    this.showDropdown = true;
+  }
+
+  cancelInlineCreate(): void {
+    this.showInlineCreate = false;
+    this.createSubError = undefined;
+    this.newSubScapeName = '';
+    this.newSubScapeDesc = '';
+  }
+
+  submitInlineSubScape(): void {
+    if (!this.newSubScapeName.trim()) {
+      this.createSubError = 'Please enter a name.';
+      return;
+    }
+    this.creatingSub = true;
+    this.createSubError = undefined;
+    this.subScapeService
+      .createSubScape({
+        subScapeName: this.newSubScapeName.trim(),
+        subScapeDescription: this.newSubScapeDesc.trim() || undefined,
+      })
+      .subscribe({
+        next: (created) => {
+          this.subScapes = [...this.subScapes, created];
+          this.creatingSub = false;
+          this.showInlineCreate = false;
+          this.selectSubScape(created);
+        },
+        error: (err) => {
+          this.creatingSub = false;
+          if (err.status === 409) {
+            this.createSubError = 'A SubScape with that name already exists.';
+          } else {
+            this.createSubError = 'Failed to create SubScape. Please try again.';
+          }
+        },
+      });
   }
 
   selectSubScape(subScape: SubScapeDTO): void {

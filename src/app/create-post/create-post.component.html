@@ -39,8 +39,50 @@
             <span class="option-desc" *ngIf="s.subScapeDescription"> — {{ s.subScapeDescription }}</span>
           </li>
         </ul>
-        <div class="subscape-dropdown subscape-empty" *ngIf="showDropdown && !selectedSubScape && filteredSubScapes.length === 0 && !loadingSubScapes">
-          No SubScapes found.
+        <div class="subscape-dropdown subscape-empty-container" *ngIf="showDropdown && !selectedSubScape && filteredSubScapes.length === 0 && !loadingSubScapes">
+          <div *ngIf="!showInlineCreate" class="create-new-option" (mousedown)="startInlineCreate()">
+            <span class="create-new-icon">+</span>
+            <span class="create-new-text">
+              <span class="create-new-label">Create new SubScape</span>
+              <span class="create-new-hint" *ngIf="searchTerm.trim()">"{{ searchTerm.trim() }}"</span>
+            </span>
+          </div>
+          <div *ngIf="showInlineCreate" class="inline-create-form">
+            <div class="inline-create-header">
+              <span class="inline-create-title">◈ New SubScape</span>
+              <button type="button" class="inline-cancel-x" (mousedown)="cancelInlineCreate()">✕</button>
+            </div>
+            <div *ngIf="createSubError" class="inline-error">{{ createSubError }}</div>
+            <div class="inline-field">
+              <label class="inline-label">Name</label>
+              <input
+                type="text"
+                class="input input-sm"
+                placeholder="e.g. Gaming, Science…"
+                [(ngModel)]="newSubScapeName"
+                name="newSubScapeName"
+                [disabled]="creatingSub"
+                autocomplete="off"
+              />
+            </div>
+            <div class="inline-field">
+              <label class="inline-label">Description <span class="inline-opt">(optional)</span></label>
+              <textarea
+                class="textarea textarea-sm"
+                placeholder="What is this SubScape about?"
+                [(ngModel)]="newSubScapeDesc"
+                name="newSubScapeDesc"
+                rows="2"
+                [disabled]="creatingSub"
+              ></textarea>
+            </div>
+            <div class="inline-actions">
+              <button type="button" class="btn btn-sm" (mousedown)="cancelInlineCreate()" [disabled]="creatingSub">Cancel</button>
+              <button type="button" class="btn btn-accent btn-sm" (mousedown)="submitInlineSubScape()" [disabled]="creatingSub">
+                {{ creatingSub ? 'Creating…' : 'Create SubScape' }}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
